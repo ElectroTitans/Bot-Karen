@@ -37,6 +37,7 @@ dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
+    compile pathfinder();
     compile name: 'vc-client-0.0.2'
 }
 

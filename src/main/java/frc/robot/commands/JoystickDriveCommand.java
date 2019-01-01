@@ -9,16 +9,21 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
+import jaci.pathfinder.Trajectory;
+
+import javax.sound.midi.Track;
+
 import com.victoryforphil.victoryconnect.*;
 
 /**
  * An example command.  You can replace me with your own command.
  */
-public class ExampleCommand extends Command {
+public class JoystickDriveCommand extends Command {
   
-  public ExampleCommand() {
+  
+  public JoystickDriveCommand() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_subsystem);
+    requires(Robot.m_drivetrain);
   }
 
   // Called just before this Command runs the first time

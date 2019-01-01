@@ -12,9 +12,11 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.commands.ExampleCommand;
+
 import frc.robot.networking.NetworkSpark;
-import frc.robot.subsystems.ExampleSubsystem;
+import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.NavigationSubsystem;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -26,11 +28,14 @@ import frc.robot.subsystems.ExampleSubsystem;
 public class Robot extends TimedRobot {
 
   public static OI m_oi;
-
-  private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1", RobotMap.PWM.driveLeft1);
+  public static DrivetrainSubsystem m_drivetrain;
+  public static NavigationSubsystem m_nav;
+  /*
+   private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1", RobotMap.PWM.driveLeft1);
   private NetworkSpark sparkLeft2 = new NetworkSpark("bot/drive/spark/left/2", RobotMap.PWM.driveLeft2);
   private NetworkSpark sparkRight1 = new NetworkSpark("bot/drive/spark/right/1", RobotMap.PWM.driveRight1);
   private NetworkSpark sparkRight2 = new NetworkSpark("bot/drive/spark/right/1", RobotMap.PWM.driveRight2);
+  /*
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -39,8 +44,8 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_oi = new OI();
-
-
+    m_drivetrain = new DrivetrainSubsystem();
+    m_nav = new NavigationSubsystem();
   }
 
   /**
