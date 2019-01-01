@@ -68,24 +68,27 @@ public class RunPathCommand extends Command {
     double angleDif = Pathfinder.boundHalfDegrees(desiredHeading - heading);
     double turn = 0.8 * (-1.0/80.0) *angleDif;
 
-    Robot.m_drivetrain.setMotors(leftOut  , rightOut);
+    Robot.m_drivetrain.setMotors(leftOut + turn , rightOut - turn);
 
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return leftFollower.isFinished() && rightFollower.isFinished();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    trajectory = null;
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    Robot.m_drivetrain.setMotors(0, 0);
+    
   }
 }
