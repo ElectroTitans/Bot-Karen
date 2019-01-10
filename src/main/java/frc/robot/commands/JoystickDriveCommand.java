@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import frc.robot.OI;
 import frc.robot.Robot;
 import jaci.pathfinder.Trajectory;
 
@@ -34,6 +35,10 @@ public class JoystickDriveCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
+    double throttle = Robot.m_oi.getLeftJoyStick().getY();
+    double turn     = Robot.m_oi.getRightJoystick().getX();
+
+    Robot.m_drivetrain.arcadeDrive(throttle, turn);
   }
 
   // Make this return true when this Command no longer needs to run execute()

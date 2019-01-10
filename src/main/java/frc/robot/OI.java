@@ -21,4 +21,16 @@ public class OI {
     joyboy1 = new Joystick(RobotMap.HID.joyboy1);
     joyboy2 = new Joystick(RobotMap.HID.joyboy2);
   }
+
+  public void bindButton(){
+
+  }
+
+  public Joystick getLeftJoyStick(){
+    return joyboy1;
+  }
+
+  public Joystick getRightJoystick(){
+    return joyboy2;
+  }
 }

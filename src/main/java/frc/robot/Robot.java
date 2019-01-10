@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import frc.robot.networking.NetworkSpark;
 import frc.robot.subsystems.DrivetrainSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 
 
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
 
   public static OI m_oi;
   public static DrivetrainSubsystem m_drivetrain;
+  public static ElevatorSubsystem   m_elevator;
   public static NavigationSubsystem m_nav;
   /*
    private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1", RobotMap.PWM.driveLeft1);
@@ -45,6 +47,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     m_oi          = new OI();
     m_drivetrain  = new DrivetrainSubsystem();
+    m_elevator    = new ElevatorSubsystem();
     m_nav         = new NavigationSubsystem();
   }
   

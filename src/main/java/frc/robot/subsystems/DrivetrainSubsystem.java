@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.drive.MecanumDrive;
 import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.JoystickDriveCommand;
@@ -35,6 +36,7 @@ public class DrivetrainSubsystem extends Subsystem {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new JoystickDriveCommand());
+    
     }
 
     public DrivetrainSubsystem() {
@@ -58,12 +60,10 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public void arcadeDrive(double throttle, double turn){
-        drive.arcadeDrive(throttle, turn);
+       drive.arcadeDrive(throttle, turn);
     }
 
-    public void curveDrive(double throttle, double turn, boolean quick){
-        drive.curvatureDrive(throttle, turn, quick);
-    }
+   
 
     public void resetEncoder(){
         encoderLeft.reset();

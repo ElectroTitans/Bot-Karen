@@ -25,6 +25,9 @@ public class RobotMap {
     public static final int driveLeft2 = 1;
     public static final int driveRight1 = 2;
     public static final int driveRight2 = 3;
+
+    public static final int elevator1 = 4;
+    public static final int elevator2 = 5;
   }
 
 
