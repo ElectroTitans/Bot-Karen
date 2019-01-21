@@ -82,12 +82,12 @@ public class DrivetrainSubsystem extends Subsystem {
         return (getLeftEncoder() + getRightEncoder()) / 2;
     }
 
-    public int getLeftDistance(){
-        return encoderLeft.get();
+    public double getLeftDistance(){
+        return encoderLeft.get() * RobotMap.DriveProfile.ticksPerMeter ;
     }
 
     public double getRightDistance(){
-        return encoderRight.get();
+        return encoderRight.get() * RobotMap.DriveProfile.ticksPerMeter ;
     }
 
     public double getAvgDistance(){

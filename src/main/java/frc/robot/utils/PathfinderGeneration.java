@@ -12,12 +12,12 @@ import jaci.pathfinder.Waypoint;
 
 public class PathfinderGeneration {
 
-    public static void generateLocal(Waypoint[] points) {
+    public static Trajectory generateLocal(Waypoint[] points) {
         Trajectory.Config config = new Trajectory.Config(Trajectory.FitMethod.HERMITE_CUBIC,
                 Trajectory.Config.SAMPLES_FAST,0.05,RobotMap.DriveProfile.maxVelocity, RobotMap.DriveProfile.maxAccel, RobotMap.DriveProfile.maxJerk);
                 
-        Trajectory trajectory = Pathfinder.generate(points, config);
-        runTrajectory(trajectory);
+       return Pathfinder.generate(points, config);
+       
     }
 
     public static void generateNetwork() {
@@ -30,7 +30,5 @@ public class PathfinderGeneration {
         });
     }
 
-    public static void runTrajectory(Trajectory trajectory) {
-        new RunPathCommand(trajectory).start();
-    }
+  
 }

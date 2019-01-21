@@ -49,6 +49,8 @@ public class Robot extends TimedRobot {
     m_drivetrain  = new DrivetrainSubsystem();
     m_elevator    = new ElevatorSubsystem();
     m_nav         = new NavigationSubsystem();
+
+
   }
   
   @Override
@@ -66,13 +68,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() { 
-
+    
   }
 
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-  
+    m_drivetrain.setMotors(1.0, 1.0);
   }
 
   @Override

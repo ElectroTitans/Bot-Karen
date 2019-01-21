@@ -28,6 +28,9 @@ public class RobotMap {
 
     public static final int elevator1 = 4;
     public static final int elevator2 = 5;
+
+    public static final int intakeWheel1 = 5;
+    public static final int intakeWheel2 = 6;
   }
 
 
@@ -45,8 +48,9 @@ public class RobotMap {
     public static final double wheelBaseWidth = 0.5;
     public static final double gearRatio = 10.71;
     public static final double encoderTicks = 40;
-    public static final double gearBoxTicks = encoderTicks / gearRatio; 
+    public static final double gearBoxTicks = encoderTicks * gearRatio; 
     public static final double wheelDiameter = 0.1524;
+    public static final double ticksPerMeter = gearBoxTicks * ((wheelDiameter / 2) * (2*3.1415))
     public static final double P = 1.0;
     public static final double I = 0;
     public static final double D = 0;
