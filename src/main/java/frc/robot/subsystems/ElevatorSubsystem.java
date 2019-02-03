@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -21,12 +23,12 @@ import frc.robot.RobotMap;
 public class ElevatorSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private Spark liftSpark1;
-    private Spark liftSpark2;
+    private CANSparkMax liftSpark1;
+    private CANSparkMax liftSpark2;
     
     public ElevatorSubsystem(){
-        liftSpark1 = new Spark(RobotMap.PWM.elevator1);
-        liftSpark2 = new Spark(RobotMap.PWM.elevator2);
+        liftSpark1 = new CANSparkMax(RobotMap.CAN.elevator1, MotorType.kBrushless);
+        liftSpark2 = new CANSparkMax(RobotMap.CAN.elevator2, MotorType.kBrushless);
     }
     @Override
     public void initDefaultCommand() {

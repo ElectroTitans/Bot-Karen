@@ -10,6 +10,7 @@ import jaci.pathfinder.Pathfinder;
 import jaci.pathfinder.Trajectory;
 import jaci.pathfinder.Waypoint;
 
+
 public class PathfinderGeneration {
 
     public static Trajectory generateLocal(Waypoint[] points) {

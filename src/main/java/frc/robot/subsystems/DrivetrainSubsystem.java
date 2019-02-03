@@ -9,6 +9,10 @@ package frc.robot.subsystems;
 
 import java.beans.Encoder;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.*;
+
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -20,10 +24,10 @@ import frc.robot.commands.JoystickDriveCommand;
 
 public class DrivetrainSubsystem extends Subsystem {
 
-    private Spark sparkLeft1;
-    private Spark sparkLeft2;
-    private Spark sparkRight1;
-    private Spark sparkRight2;
+    private CANSparkMax sparkLeft1;
+    private CANSparkMax sparkLeft2;
+    private CANSparkMax sparkRight1;
+    private CANSparkMax sparkRight2;
 
     private SpeedControllerGroup leftGroup;
     private SpeedControllerGroup rightGroup;
@@ -40,10 +44,10 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public DrivetrainSubsystem() {
-        sparkLeft1 = new Spark(RobotMap.PWM.driveLeft1);
-        sparkLeft2 = new Spark(RobotMap.PWM.driveLeft2);
-        sparkRight1 = new Spark(RobotMap.PWM.driveRight1);
-        sparkRight2 = new Spark(RobotMap.PWM.driveRight2);
+        sparkLeft1 = new CANSparkMax(RobotMap.CAN.driveLeft1, MotorType.kBrushless);
+        sparkLeft2 = new CANSparkMax(RobotMap.CAN.driveLeft2, MotorType.kBrushless);
+        sparkRight1 = new CANSparkMax(RobotMap.CAN.driveRight1, MotorType.kBrushless);
+        sparkRight2 = new CANSparkMax(RobotMap.CAN.driveRight2, MotorType.kBrushless);
         
         leftGroup = new SpeedControllerGroup(sparkLeft1, sparkLeft2);
         rightGroup = new SpeedControllerGroup(sparkRight1, sparkRight2);
