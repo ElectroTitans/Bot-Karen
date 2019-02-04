@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import com.victoryforphil.victoryconnect.listeners.ClientListener;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -17,7 +19,7 @@ import frc.robot.networking.NetworkSpark;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
-
+import frc.robot.networking.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -45,20 +47,40 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    Networking.startVictoryConnect();
     m_oi          = new OI();
     m_drivetrain  = new DrivetrainSubsystem();
     m_elevator    = new ElevatorSubsystem();
     m_nav         = new NavigationSubsystem();
+
+    System.out.println("Robot Code Init! - VFP");
+
+    
+    
+    Networking.vcClient.setListener(new ClientListener(){
+    
+      @Override
+      public void ready() {
+        Networking.vcClient.newTopic("Robot Status", "bot/status", "TCP");
+        Networking.vcClient.setTopic("bot/status", "Init'd");
+        
+        m_nav.networkReady();
+
+        System.out.println("Network Code Init! - VFP");
+      }
+    });
 
 
   }
   
   @Override
   public void robotPeriodic() {
+    
   }
 
   @Override
   public void disabledInit() {
+    Networking.vcClient.setTopic("bot/status", "Disabled");
   }
 
   @Override
@@ -68,7 +90,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() { 
-    
+    Networking.vcClient.setTopic("bot/status", "Auto");
   }
 
   @Override
@@ -79,7 +101,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-
+    Networking.vcClient.setTopic("bot/status", "Tele");
   }
 
   @Override

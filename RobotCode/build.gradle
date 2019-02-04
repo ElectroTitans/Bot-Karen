@@ -38,7 +38,7 @@ deploy {
 }
 
 // Set this to true to enable desktop support.
-def includeDesktopSupport = false
+def includeDesktopSupport = true
 
 // Maven central needed for JUnit
 repositories {
@@ -52,8 +52,10 @@ repositories {
 // Also defines JUnit 4.
 dependencies {
     compile wpi.deps.wpilib()
-    compile name: 'vc-client-0.0.4'
     compile wpi.deps.vendor.java()
+    compile name: 'vc-client-0.0.5'
+    compile name: 'vc-logger-0.0.1'
+    implementation 'org.jmdns:jmdns:3.5.5'
     nativeZip wpi.deps.vendor.jni(wpi.platforms.roborio)
     nativeDesktopZip wpi.deps.vendor.jni(wpi.platforms.desktop)
     testCompile 'junit:junit:4.12'

@@ -7,20 +7,23 @@
 
 package frc.robot.subsystems;
 
-import com.kauailabs.navx.frc.AHRS;
-
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.I2C.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import frc.robot.RobotMap;
 
 /**
  * An example subsystem. You can replace me with your own Subsystem.
  */
-public class NavigationSubsystem extends Subsystem {
+public class ElevatorSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
-    private AHRS navx;
-    public NavigationSubsystem(){
-        navx = new AHRS(Port.kMXP);
+    private Spark liftSpark1;
+    private Spark liftSpark2;
+    
+    public ElevatorSubsystem(){
+        liftSpark1 = new Spark(RobotMap.CAN.elevator1);
+        liftSpark2 = new Spark(RobotMap.CAN.elevator2);
     }
     @Override
     public void initDefaultCommand() {
@@ -28,7 +31,8 @@ public class NavigationSubsystem extends Subsystem {
         // setDefaultCommand(new MySpecialCommand());
     }
 
-    public double getHeadingDegrees(){
-        return navx.getFusedHeading();
+    public void setRaw(double value){
+        liftSpark1.set(value);
+        liftSpark2.set(value);
     }
 }

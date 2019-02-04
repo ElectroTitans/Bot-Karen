@@ -6,9 +6,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.RunPathCommand;
 import frc.robot.networking.Networking;
-import jaci.pathfinder.Pathfinder;
-import jaci.pathfinder.Trajectory;
-import jaci.pathfinder.Waypoint;
+import jaci.pathfinder.*;
 
 
 public class PathfinderGeneration {

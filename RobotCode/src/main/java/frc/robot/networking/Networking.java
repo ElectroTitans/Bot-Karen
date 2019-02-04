@@ -17,8 +17,9 @@ public class Networking {
         name = clientName;
     }
 
-    public static void startVictoryConnect(String ip, String port, int tickRate){
+    public static void startVictoryConnect(){
         vcClient = new Client(id, name);
+        vcClient.enableASAP();
         vcClient.setListener(new ClientListener(){
             @Override
             public void ready() {
