@@ -9,6 +9,10 @@ package frc.robot.subsystems;
 
 import java.beans.Encoder;
 
+import com.revrobotics.CANEncoder;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -19,11 +23,14 @@ import frc.robot.RobotMap;
 import frc.robot.commands.JoystickDriveCommand;
 
 public class DrivetrainSubsystem extends Subsystem {
+    public enum EncoderMode {
+        NEO, QUAD
+    }
 
-    private Spark sparkLeft1;
-    private Spark sparkLeft2;
-    private Spark sparkRight1;
-    private Spark sparkRight2;
+    private CANSparkMax sparkLeft1;
+    private CANSparkMax sparkLeft2;
+    private CANSparkMax sparkRight1;
+    private CANSparkMax sparkRight2;
 
     private SpeedControllerGroup leftGroup;
     private SpeedControllerGroup rightGroup;
@@ -31,7 +38,12 @@ public class DrivetrainSubsystem extends Subsystem {
     private edu.wpi.first.wpilibj.Encoder encoderLeft;
     private edu.wpi.first.wpilibj.Encoder encoderRight;
 
+    private CANEncoder sparkEncoderLeft;
+    private CANEncoder sparkEncoderRight;
+
     private DifferentialDrive drive;
+
+    private EncoderMode encoderMode = EncoderMode.NEO;
 
     @Override
     public void initDefaultCommand() {
@@ -39,17 +51,27 @@ public class DrivetrainSubsystem extends Subsystem {
     
     }
 
-    public DrivetrainSubsystem() {
-        sparkLeft1 = new Spark(RobotMap.CAN.driveLeft1);
-        sparkLeft2 = new Spark(RobotMap.CAN.driveLeft2);
-        sparkRight1 = new Spark(RobotMap.CAN.driveRight1);
-        sparkRight2 = new Spark(RobotMap.CAN.driveRight2);
+    public DrivetrainSubsystem(EncoderMode encoders) {
+        encoderMode = encoders;
+
+        sparkLeft1 = new CANSparkMax(RobotMap.CAN.driveLeft1, MotorType.kBrushless);
+        sparkLeft2 = new CANSparkMax(RobotMap.CAN.driveLeft2, MotorType.kBrushless);
+        sparkRight1 = new CANSparkMax(RobotMap.CAN.driveRight1, MotorType.kBrushless);
+        sparkRight2 = new CANSparkMax(RobotMap.CAN.driveRight2, MotorType.kBrushless);
+
+        sparkLeft2.follow(sparkLeft1);
+        sparkRight2.follow(sparkRight1);
         
         leftGroup = new SpeedControllerGroup(sparkLeft1, sparkLeft2);
         rightGroup = new SpeedControllerGroup(sparkRight1, sparkRight2);
         
+      
         encoderLeft = new edu.wpi.first.wpilibj.Encoder(RobotMap.DIO.encoderLeft1, RobotMap.DIO.encoderLeft2);
         encoderRight = new edu.wpi.first.wpilibj.Encoder(RobotMap.DIO.encoderRight1, RobotMap.DIO.encoderRight2);
+
+        sparkEncoderLeft = sparkLeft1.getEncoder();
+        sparkEncoderRight = sparkRight1.getEncoder();
+        
 
         drive = new DifferentialDrive(leftGroup, rightGroup);
     }
@@ -68,14 +90,29 @@ public class DrivetrainSubsystem extends Subsystem {
     public void resetEncoder(){
         encoderLeft.reset();
         encoderRight.reset();
+        
     }
 
     public int getLeftEncoder(){
-        return encoderRight.get();
+        switch (encoderMode){
+            case NEO:
+            return (int)sparkEncoderLeft.getPosition();
+          
+
+            default:
+            return encoderLeft.get();
+        }
     }
 
     public int getRightEncoder(){
-        return encoderRight.get();
+        switch (encoderMode){
+            case NEO:
+            return (int)sparkEncoderRight.getPosition();
+          
+
+            default:
+            return encoderRight.get();
+        }
     }
 
     public int getAvgEncoder(){
@@ -83,15 +120,23 @@ public class DrivetrainSubsystem extends Subsystem {
     }
 
     public double getLeftDistance(){
-        return encoderLeft.get() * RobotMap.DriveProfile.ticksPerMeter ;
+        return getLeftEncoder() * RobotMap.DriveProfile.ticksPerMeter ;
     }
 
     public double getRightDistance(){
-        return encoderRight.get() * RobotMap.DriveProfile.ticksPerMeter ;
+        return getRightEncoder() * RobotMap.DriveProfile.ticksPerMeter ;
     }
 
     public double getAvgDistance(){
         return (getLeftDistance() + getRightDistance()) / 2;
+    }
+
+    public CANSparkMax getLeftMasterSpark(){
+        return sparkLeft1;
+    }
+
+    public CANSparkMax getRightMasterSpark(){
+        return sparkLeft2;
     }
 
 }

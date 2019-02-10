@@ -39,6 +39,13 @@ public class RobotMap {
     public static final int encoderLeft2 = 1;
     public static final int encoderRight1 = 2;
     public static final int encoderRight2 = 3;
+
+    public static final int hallEffectTop = 4;
+    public static final int hallEffectBottom = 5;
+  }
+
+  public class Analog{
+    public static final int pressureSensor = 0;
   }
 
   public class DriveProfile{

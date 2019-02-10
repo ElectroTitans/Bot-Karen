@@ -19,6 +19,9 @@ import frc.robot.networking.NetworkSpark;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
+import frc.robot.subsystems.PressureMonitor;
+import frc.robot.subsystems.DrivetrainSubsystem.EncoderMode;
+import frc.robot.commands.TestCommand;
 import frc.robot.networking.*;
 
 /**
@@ -34,6 +37,7 @@ public class Robot extends TimedRobot {
   public static DrivetrainSubsystem m_drivetrain;
   public static ElevatorSubsystem   m_elevator;
   public static NavigationSubsystem m_nav;
+  public static PressureMonitor     m_pressure;
   /*
    private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1", RobotMap.PWM.driveLeft1);
   private NetworkSpark sparkLeft2 = new NetworkSpark("bot/drive/spark/left/2", RobotMap.PWM.driveLeft2);
@@ -49,9 +53,10 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     Networking.startVictoryConnect();
     m_oi          = new OI();
-    m_drivetrain  = new DrivetrainSubsystem();
+    m_drivetrain  = new DrivetrainSubsystem(EncoderMode.NEO);
     m_elevator    = new ElevatorSubsystem();
     m_nav         = new NavigationSubsystem();
+    m_pressure    = new PressureMonitor();
 
     System.out.println("Robot Code Init! - VFP");
 
@@ -67,9 +72,12 @@ public class Robot extends TimedRobot {
         m_nav.networkReady();
 
         System.out.println("Network Code Init! - VFP");
+
+
       }
     });
-
+    
+    new TestCommand().start();
 
   }
   
