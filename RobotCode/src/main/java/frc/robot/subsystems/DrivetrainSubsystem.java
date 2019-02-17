@@ -13,6 +13,10 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.PIDInterface;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,7 +26,7 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.JoystickDriveCommand;
 
-public class DrivetrainSubsystem extends Subsystem {
+public class DrivetrainSubsystem extends Subsystem implements PIDOutput, PIDSource {
     public enum EncoderMode {
         NEO, QUAD
     }
@@ -48,7 +52,7 @@ public class DrivetrainSubsystem extends Subsystem {
     @Override
     public void initDefaultCommand() {
         setDefaultCommand(new JoystickDriveCommand());
-    
+
     }
 
     public DrivetrainSubsystem(EncoderMode encoders) {
@@ -61,82 +65,98 @@ public class DrivetrainSubsystem extends Subsystem {
 
         sparkLeft2.follow(sparkLeft1);
         sparkRight2.follow(sparkRight1);
-        
+
         leftGroup = new SpeedControllerGroup(sparkLeft1, sparkLeft2);
         rightGroup = new SpeedControllerGroup(sparkRight1, sparkRight2);
-        
-      
+
         encoderLeft = new edu.wpi.first.wpilibj.Encoder(RobotMap.DIO.encoderLeft1, RobotMap.DIO.encoderLeft2);
         encoderRight = new edu.wpi.first.wpilibj.Encoder(RobotMap.DIO.encoderRight1, RobotMap.DIO.encoderRight2);
 
         sparkEncoderLeft = sparkLeft1.getEncoder();
         sparkEncoderRight = sparkRight1.getEncoder();
-        
 
         drive = new DifferentialDrive(leftGroup, rightGroup);
     }
-    
-    public void setMotors(double left, double right){
+
+    public void setMotors(double left, double right) {
         leftGroup.set(left);
         rightGroup.set(right);
     }
 
-    public void arcadeDrive(double throttle, double turn){
-       drive.arcadeDrive(throttle, turn);
+    public void arcadeDrive(double throttle, double turn) {
+        drive.arcadeDrive(throttle, turn);
     }
 
-   
-
-    public void resetEncoder(){
+    public void resetEncoder() {
         encoderLeft.reset();
         encoderRight.reset();
-        
+
     }
 
-    public int getLeftEncoder(){
-        switch (encoderMode){
-            case NEO:
-            return (int)sparkEncoderLeft.getPosition();
-          
+    public int getLeftEncoder() {
+        switch (encoderMode) {
+        case NEO:
+            return (int) sparkEncoderLeft.getPosition();
 
-            default:
+        default:
             return encoderLeft.get();
         }
     }
 
-    public int getRightEncoder(){
-        switch (encoderMode){
-            case NEO:
-            return (int)sparkEncoderRight.getPosition();
-          
+    public int getRightEncoder() {
+        switch (encoderMode) {
+        case NEO:
+            return (int) sparkEncoderRight.getPosition();
 
-            default:
+        default:
             return encoderRight.get();
         }
     }
 
-    public int getAvgEncoder(){
+    public int getAvgEncoder() {
         return (getLeftEncoder() + getRightEncoder()) / 2;
     }
 
-    public double getLeftDistance(){
-        return getLeftEncoder() * RobotMap.DriveProfile.ticksPerMeter ;
+    public double getLeftDistance() {
+        return getLeftEncoder() * RobotMap.DriveProfile.ticksPerMeter;
     }
 
-    public double getRightDistance(){
-        return getRightEncoder() * RobotMap.DriveProfile.ticksPerMeter ;
+    public double getRightDistance() {
+        return getRightEncoder() * RobotMap.DriveProfile.ticksPerMeter;
     }
 
-    public double getAvgDistance(){
+    public double getAvgDistance() {
         return (getLeftDistance() + getRightDistance()) / 2;
     }
 
-    public CANSparkMax getLeftMasterSpark(){
+    public CANSparkMax getLeftMasterSpark() {
         return sparkLeft1;
     }
 
-    public CANSparkMax getRightMasterSpark(){
+    public CANSparkMax getRightMasterSpark() {
         return sparkLeft2;
     }
+
+    @Override
+    public void setPIDSourceType(PIDSourceType pidSource) {
+
+    }
+
+    @Override
+    public PIDSourceType getPIDSourceType() {
+        return null;
+    }
+
+    @Override
+    public double pidGet() {
+        return getAvgDistance();
+    }
+
+    @Override
+    public void pidWrite(double output) {
+        setMotors(output, output);
+    }
+
+   
 
 }

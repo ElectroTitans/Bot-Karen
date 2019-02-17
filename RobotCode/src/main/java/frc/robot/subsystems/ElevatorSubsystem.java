@@ -8,10 +8,12 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.I2C.Port;
@@ -30,11 +32,13 @@ public class ElevatorSubsystem extends NetworkedSubsystem {
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private CANEncoder liftEncoder;
-    
+    private CANPIDController pidController;
+
+    private double tickOffset = 0;
+
     public ElevatorSubsystem(){
         liftSpark1 = new CANSparkMax(RobotMap.CAN.elevator1, MotorType.kBrushless);
         liftSpark1.setIdleMode(IdleMode.kBrake);
-        hallEffectTop = new DigitalInput(RobotMap.DIO.hallEffectTop);
         hallEffectBottom = new DigitalInput(RobotMap.DIO.hallEffectBottom);
 
 
@@ -49,6 +53,11 @@ public class ElevatorSubsystem extends NetworkedSubsystem {
         liftSpark1.set(value);
         
     }
+
+    public void setPosition(double meters){
+        pidController.setReference(meters,ControlType.kPosition);
+    }
+
 
     @Override
     public void networkInit() {

@@ -71,6 +71,8 @@ public class Robot extends TimedRobot {
         
         m_nav.networkReady();
 
+        RobotMap.syncWithNetwork();
+
         System.out.println("Network Code Init! - VFP");
 
 
@@ -89,6 +91,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit() {
     Networking.vcClient.setTopic("bot/status", "Disabled");
+    
   }
 
   @Override
