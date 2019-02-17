@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import frc.robot.networking.Networking;
+
 /**
  * The RobotMap is a mapping from the ports sensors and actuators are wired into
  * to a variable name. This provides flexibility changing wiring, makes checking
@@ -14,7 +16,7 @@ package frc.robot;
  * floating around.
  */
 public class RobotMap {
-
+ 
   public class HID{
     public static final int joyboy1 = 0;
     public static final int joyboy2 = 1;
@@ -64,5 +66,24 @@ public class RobotMap {
     public static final double V = 1 / maxVelocity;
     public static final double A = 0;
     
+  }
+
+  public static class ElevatorProfile{
+    public static double maxAccel = 2.0;
+    public static double maxVelocity = 1.7;
+
+    public static double P = 1.0;
+    public static double I = 0;
+    public static double D = 0;
+    public static double V = 1 / maxVelocity;
+    public static double A = 0;
+    public static double encoderTicks = 40;
+  }
+
+  public static void syncWithNetwork(){
+    Networking.vcClient.setTopic("bot/profile/elevator/P", ElevatorProfile.P);
+    Networking.vcClient.setTopic("bot/profile/elevator/I", ElevatorProfile.I);
+    Networking.vcClient.setTopic("bot/profile/elevator/D", ElevatorProfile.D);
+
   }
 }

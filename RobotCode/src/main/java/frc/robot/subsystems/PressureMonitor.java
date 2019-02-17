@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
+import frc.robot.commands.PublishPressureCommand;
 
 /**
  * Add your docs here.
@@ -29,6 +30,6 @@ public class PressureMonitor extends Subsystem {
   }
 
   public double getPressure(){
-    return 250 * ( pressureSensor.getAverageVoltage() / 5.0) - 25;
+    return 250 * ( pressureSensor.getVoltage() / 5.0) - 25;
   }
 }
