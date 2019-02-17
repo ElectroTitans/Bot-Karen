@@ -7,7 +7,9 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -25,17 +27,13 @@ public class ElevatorSubsystem extends NetworkedSubsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     private CANSparkMax liftSpark1;
-    private CANSparkMax liftSpark2;
     private DigitalInput hallEffectTop;
     private DigitalInput hallEffectBottom;
     private CANEncoder liftEncoder;
     
     public ElevatorSubsystem(){
         liftSpark1 = new CANSparkMax(RobotMap.CAN.elevator1, MotorType.kBrushless);
-        liftSpark2 = new CANSparkMax(RobotMap.CAN.elevator2, MotorType.kBrushless);
-
-        liftSpark2.follow(liftSpark1);
-
+        liftSpark1.setIdleMode(IdleMode.kBrake);
         hallEffectTop = new DigitalInput(RobotMap.DIO.hallEffectTop);
         hallEffectBottom = new DigitalInput(RobotMap.DIO.hallEffectBottom);
 

@@ -21,16 +21,14 @@ public class RobotMap {
   }
 
   public class CAN{
-    public static final int driveLeft1 = 0;
-    public static final int driveLeft2 = 1;
-    public static final int driveRight1 = 2;
-    public static final int driveRight2 = 3;
+    public static final int driveLeft1 = 2;
+    public static final int driveLeft2 = 3;
+    public static final int driveRight1 = 1;
+    public static final int driveRight2 = 0;
 
-    public static final int elevator1 = 4;
-    public static final int elevator2 = 5;
+    public static final int elevator1 = 5;
 
-    public static final int intakeWheel1 = 5;
-    public static final int intakeWheel2 = 6;
+    public static final int intakeWheel1 = 4;
   }
 
 

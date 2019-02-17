@@ -40,6 +40,15 @@ public class JoystickDriveCommand extends NetworkedCommand
     double turn     = Robot.m_oi.getRightJoystick().getX();
 
     Robot.m_drivetrain.arcadeDrive(throttle, turn);
+  
+    if(Robot.m_oi.getLeftJoyStick().getTrigger()){
+      Robot.m_elevator.setRaw(0.5);
+    }else if(Robot.m_oi.getRightJoystick().getTrigger()){
+      Robot.m_elevator.setRaw(-0.1);
+    }else{
+      Robot.m_elevator.setRaw(0;
+    }
+  
   }
 
   // Make this return true when this Command no longer needs to run execute()
