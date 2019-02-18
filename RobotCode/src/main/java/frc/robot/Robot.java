@@ -9,6 +9,7 @@ package frc.robot;
 
 import com.victoryforphil.victoryconnect.listeners.ClientListener;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -60,7 +61,9 @@ public class Robot extends TimedRobot {
 
     System.out.println("Robot Code Init! - VFP");
 
-    
+    CameraServer.getInstance().startAutomaticCapture();
+
+    /*
     
     Networking.vcClient.setListener(new ClientListener(){
     
@@ -78,9 +81,7 @@ public class Robot extends TimedRobot {
 
       }
     });
-    
-    new TestCommand().start();
-
+    */
   }
   
   @Override
@@ -90,7 +91,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void disabledInit() {
-    Networking.vcClient.setTopic("bot/status", "Disabled");
+   // Networking.vcClient.setTopic("bot/status", "Disabled");
     
   }
 
@@ -101,7 +102,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() { 
-    Networking.vcClient.setTopic("bot/status", "Auto");
+   // Networking.vcClient.setTopic("bot/status", "Auto");
   }
 
   @Override
@@ -112,7 +113,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    Networking.vcClient.setTopic("bot/status", "Tele");
+   // Networking.vcClient.setTopic("bot/status", "Tele");
   }
 
   @Override

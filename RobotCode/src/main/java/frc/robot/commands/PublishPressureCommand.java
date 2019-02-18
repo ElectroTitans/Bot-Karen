@@ -10,6 +10,7 @@ package frc.robot.commands;
 import com.victoryforphil.logger.VictoryLogger;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class PublishPressureCommand extends Command {
@@ -27,6 +28,8 @@ public class PublishPressureCommand extends Command {
   @Override
   protected void execute() {
     VictoryLogger.debug("PublishPressureCommand", "Pressure", Robot.m_pressure.getPressure() + " PSI");
+    
+    SmartDashboard.putNumber("pressure", Robot.m_pressure.getPressure());
   }
 
   // Make this return true when this Command no longer needs to run execute()
