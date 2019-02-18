@@ -16,7 +16,9 @@ import frc.robot.networking.Networking;
  * floating around.
  */
 public class RobotMap {
- 
+  public class NetworkingSettings{
+    public static final boolean useVictoryConnect = false;
+  }
   public class HID{
     public static final int joyboy1 = 0;
     public static final int joyboy2 = 1;

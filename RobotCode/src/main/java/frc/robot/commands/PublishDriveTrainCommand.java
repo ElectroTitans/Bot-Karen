@@ -16,10 +16,10 @@ import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.networking.Networking;
 
-public class PublishPressureCommand extends Command {
-  public PublishPressureCommand() {
+public class PublishDriveTrainCommand extends Command {
+  public PublishDriveTrainCommand() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_pressure);
+    requires(Robot.m_drivetrain);
   }
 
   // Called just before this Command runs the first time
@@ -30,20 +30,19 @@ public class PublishPressureCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    VictoryLogger.debug("PublishPressureCommand", "Pressure", Robot.m_pressure.getPressure() + " PSI");
+   
     
     if(RobotMap.NetworkingSettings.useVictoryConnect){
       
-      Networking.vcClient.addSource(new TopicSource(){
-      
+      Networking.vcClient.addSource(new TopicSource(){  
         @Override
         public String getPath() {
-          return "bot/pressure";
+          return "bot/drivetrain/encoder/avg_distance";
         }
       
         @Override
         public Object getData() {
-          return  Robot.m_pressure.getPressure();
+          return  Robot.m_drivetrain.getAvgDistance();
         }
       
         @Override
@@ -52,8 +51,10 @@ public class PublishPressureCommand extends Command {
         }
       });
 
+     
+
     }else{
-      SmartDashboard.putNumber("elevator/position", Robot.m_pressure.getPressure());
+      SmartDashboard.putNumber("bot/drivetrain/encoder/avg_distance", Robot.m_drivetrain.getAvgDistance());
     }
   }
 

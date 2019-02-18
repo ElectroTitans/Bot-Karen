@@ -46,7 +46,7 @@ public class JoystickDriveCommand extends NetworkedCommand
     }else if(Robot.m_oi.getRightJoystick().getTrigger()){
       Robot.m_elevator.setRaw(-0.1);
     }else{
-      Robot.m_elevator.setRaw(0;
+      Robot.m_elevator.setRaw(0);
     }
   
   }

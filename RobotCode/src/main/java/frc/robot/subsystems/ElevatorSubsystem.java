@@ -58,6 +58,9 @@ public class ElevatorSubsystem extends NetworkedSubsystem {
         pidController.setReference(meters,ControlType.kPosition);
     }
 
+    public CANEncoder getEncoder(){
+        return liftEncoder;
+    }
 
     @Override
     public void networkInit() {

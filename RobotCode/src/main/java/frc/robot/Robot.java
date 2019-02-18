@@ -22,6 +22,8 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.PressureMonitor;
 import frc.robot.subsystems.DrivetrainSubsystem.EncoderMode;
+import frc.robot.commands.PublishDriveTrainCommand;
+import frc.robot.commands.PublishPressureCommand;
 import frc.robot.commands.TestCommand;
 import frc.robot.networking.*;
 
@@ -36,15 +38,17 @@ public class Robot extends TimedRobot {
 
   public static OI m_oi;
   public static DrivetrainSubsystem m_drivetrain;
-  public static ElevatorSubsystem   m_elevator;
+  public static ElevatorSubsystem m_elevator;
   public static NavigationSubsystem m_nav;
-  public static PressureMonitor     m_pressure;
+  public static PressureMonitor m_pressure;
   /*
-   private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1", RobotMap.PWM.driveLeft1);
-  private NetworkSpark sparkLeft2 = new NetworkSpark("bot/drive/spark/left/2", RobotMap.PWM.driveLeft2);
-  private NetworkSpark sparkRight1 = new NetworkSpark("bot/drive/spark/right/1", RobotMap.PWM.driveRight1);
-  private NetworkSpark sparkRight2 = new NetworkSpark("bot/drive/spark/right/1", RobotMap.PWM.driveRight2);
-  */
+   * private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1",
+   * RobotMap.PWM.driveLeft1); private NetworkSpark sparkLeft2 = new
+   * NetworkSpark("bot/drive/spark/left/2", RobotMap.PWM.driveLeft2); private
+   * NetworkSpark sparkRight1 = new NetworkSpark("bot/drive/spark/right/1",
+   * RobotMap.PWM.driveRight1); private NetworkSpark sparkRight2 = new
+   * NetworkSpark("bot/drive/spark/right/1", RobotMap.PWM.driveRight2);
+   */
 
   /**
    * This function is run when the robot is first started up and should be used
@@ -52,47 +56,57 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-    Networking.startVictoryConnect();
-    m_oi          = new OI();
-    m_drivetrain  = new DrivetrainSubsystem(EncoderMode.NEO);
-    m_elevator    = new ElevatorSubsystem();
-    m_nav         = new NavigationSubsystem();
-    m_pressure    = new PressureMonitor();
+
+    m_oi = new OI();
+    m_drivetrain = new DrivetrainSubsystem(EncoderMode.NEO);
+    m_elevator = new ElevatorSubsystem();
+    m_nav = new NavigationSubsystem();
+    m_pressure = new PressureMonitor();
 
     System.out.println("Robot Code Init! - VFP");
 
     CameraServer.getInstance().startAutomaticCapture();
 
-    /*
-    
-    Networking.vcClient.setListener(new ClientListener(){
-    
-      @Override
-      public void ready() {
-        Networking.vcClient.newTopic("Robot Status", "bot/status", "TCP");
-        Networking.vcClient.setTopic("bot/status", "Init'd");
+    if (RobotMap.NetworkingSettings.useVictoryConnect) {
+
+      Networking.startVictoryConnect();
+      Networking.vcClient.setListener(new ClientListener() {
+
+        @Override
+        public void ready() {
+
         
-        m_nav.networkReady();
 
-        RobotMap.syncWithNetwork();
+          RobotMap.syncWithNetwork();
+          Networking.vcClient.newTopic("Robot Status", "bot/status", "TCP");
+          Networking.vcClient.setTopic("bot/status", "Init'd");
+          System.out.println("Network Code Init! - VFP");
 
-        System.out.println("Network Code Init! - VFP");
+          m_nav.networkReady();
 
+          new PublishPressureCommand().start();
+          new PublishDriveTrainCommand().start();
+        }
+      });
+      
+    }else{
+      new PublishPressureCommand().start();
+      new PublishDriveTrainCommand().start();
+    }
 
-      }
-    });
-    */
   }
-  
+
   @Override
   public void robotPeriodic() {
-    
+
   }
 
   @Override
   public void disabledInit() {
-   // Networking.vcClient.setTopic("bot/status", "Disabled");
-    
+    if(RobotMap.NetworkingSettings.useVictoryConnect){
+      Networking.vcClient.setTopic("bot/status", "Disabled");
+    }
+
   }
 
   @Override
@@ -101,19 +115,25 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void autonomousInit() { 
-   // Networking.vcClient.setTopic("bot/status", "Auto");
+  public void autonomousInit() {
+    if(RobotMap.NetworkingSettings.useVictoryConnect){
+      Networking.vcClient.setTopic("bot/status", "Auto");
+    }
+    
   }
 
   @Override
   public void autonomousPeriodic() {
     Scheduler.getInstance().run();
-    m_drivetrain.setMotors(1.0, 1.0);
+  
   }
 
   @Override
   public void teleopInit() {
-   // Networking.vcClient.setTopic("bot/status", "Tele");
+    if(RobotMap.NetworkingSettings.useVictoryConnect){
+      Networking.vcClient.setTopic("bot/status", "Tele");
+    }
+    
   }
 
   @Override
@@ -126,70 +146,39 @@ public class Robot extends TimedRobot {
   }
 }
 
-
 /*
-  _ __   _____      __  _   _  ___  __ _ _ __ 
- | '_ \ / _ \ \ /\ / / | | | |/ _ \/ _` | '__|
- | | | |  __/\ V  V /  | |_| |  __/ (_| | |   
- |_| |_|\___| \_/\_/    \__, |\___|\__,_|_|   
-                        |___/                 
-happy new year - new year's day
-
-.;;,     .;;, 
-`  ;;   ;;  ' 
-   ;;   ;; ,  .;;;.   .;;,;;;,  .;;,;;;,  .;;.  .;;. 
- ,;;;;;;;;;'  `   ;;  ` ;;   ;; ` ;;   ;; ` ;;  ;; ' 
- ` ;;   ;;    .;;.;;    ;;   ;;   ;;   ;;   ;;  ;; 
-   ;;   ;;    ;;  ;; ,  ;;   ;;   ;;   ;;   ;;  ;; 
-.  ;;    ';;' `;;;';;'  ;;';;'    ;;';;'     `;;'; 
-';;'                    ;;        ;;            ;; 
-                     .  ;;     .  ;;         .  ;; 
-                     ';;'      ';;'          ';;' 
-
-               .;;, ,;;;, 
-               `  ;;    ;; 
-                  ;;    ;;     ,;;,  .;;.      .;;, 
-                  ;;    ;;    ;;  ;; ` ;;      ;; ' 
-                  ;;    ;;    ;;;;;'   ;;  ;;  ;; 
-                  ;;    ;;    ;;   .   ;;  ;;  ;; 
-               .  ;;     ';;'  `;;;'    `;;'`;;' 
-               ';;' 
-
-                              .;;.     .;;. 
-                              `  ;;   ;;  ' 
-                                 ;;   ;;   .;;,  .;;;.   .;;.;;;, 
-                                 ;;   ;;  ;;  ;; '   ;;  ` ;;   ' 
-                                 ;;   ;;  ;;;;;' .;;,;;    ;; 
-                                  `;;;';  ;;   . ;;  ;; ,  ;; 
-                                      ;;   `;;;'  `;;';;'  ;' 
-                                      ;; 
-                                  .'  ;; 
-                                  ';;;' 
-                         ,;. 
-                  ..,,,...;;. 
-              ,;;;;;;;;;;;;;;;. 
-            .;;;;;;;;;;;;;;;;;;            /~~~\ 
-            ;;;;;;;;;;;;;;;;;;'         .;;;;    \ 
-   .,. ;;   ;;;;;;;;;;;;;;;;;;,        .;;'\      | 
- ;;;;;;;,    `;;;;;;;;;;;;;;;;;     .;;;;'   \__ /  .:::. 
- `;;;;;;;;,    `;;;;;;;;;;;;;'   .;;;;;'          \ ::::: 
-       `;;;;;,     `;;;;;;'  .,;;;;;;'              \::: 
-         `;;;;;,.,,.;;;;;;.;;;;;;;''            ,a@@@@@@@@@a, 
-           `;;;;;;;;;;;;;;;;;;;'           .a@@@@@@@ XII @@@@@@@a, 
-              `;;;;;;;;;;;;;;;;         .a@@.@@@@aaaa/|\aaaa@@@@.@@a, 
-                `;;;;;;;;;;;;;;;      .@@@@@@@aaa@@@@@|@@@@@aaa@@@@@@@, 
-                 ;;;;;;;;;;;;;;;.   .@@@@@@@aa@@@@@@@/|\@@@@@@@aa@@@@@@@. 
-                ;;;;;;;;;;;;;;;;;  .@@@.@@@aa@@@@@@@@@|@@@@@@@@@aa@@@.@@@. 
-              .################### @@@@@@@aa@@@@@@@@@@|@@@@@@@@@@aa@@@@@@@ 
-              ###################; @@@@@@@aa@@@@@@@@@@|@@@@@@@@@@aa@@@@@@@ 
-              #;;;;;;;#######;;;;; @ IX @@aa@@@@@@@@@@|@@@@@@@@@@aa@ III @ 
-              ;;;;;;;;;###;;;;;;;; @aaaa@@aa@@@@@@@@@@@@@@@@@@@@@aa@aaaaa@ 
-              ;;;;;;;;'  `;;;;;;;' @@@@@@@aa@@@@@@@@@@@@@@@@@@@@@aa@@@@@@@ 
-             ,;;;;;;'     ;;;;;;'  `@@@.@@@aa@@@@@@@@@@@@@@@@@@@aa@@@.@@@' 
-            ,;;;;;'       ;;;;;'    `@@@@@@@aa@@@@@@@@@@@@@@@@aa@@@@@@@@' 
-           ,;;;;'        ,;;;;'      `@@@@.@@@aaa@@@@@@@@@@aaa@@.@@@@@@' 
-          ;;;;'         .;;;;'          `@@@@@@@@aaaaaaaaaa@@@@@@@@@' 
-        .;;;;;          ;;;;;;;,           `@@@@@@@@@ VI @@@@@@@@' 
-        `;;;;;'          '''''''                `@@@@aaaa@@@'
-*/
+ * _ __ _____ __ _ _ ___ __ _ _ __ | '_ \ / _ \ \ /\ / / | | | |/ _ \/ _` | '__|
+ * | | | | __/\ V V / | |_| | __/ (_| | | |_| |_|\___| \_/\_/ \__,
+ * |\___|\__,_|_| |___/ happy new year - new year's day
+ * 
+ * .;;, .;;, ` ;; ;; ' ;; ;; , .;;;. .;;,;;;, .;;,;;;, .;;. .;;. ,;;;;;;;;;' `
+ * ;; ` ;; ;; ` ;; ;; ` ;; ;; ' ` ;; ;; .;;.;; ;; ;; ;; ;; ;; ;; ;; ;; ;; ;; ,
+ * ;; ;; ;; ;; ;; ;; . ;; ';;' `;;;';;' ;;';;' ;;';;' `;;'; ';;' ;; ;; ;; . ;; .
+ * ;; . ;; ';;' ';;' ';;'
+ * 
+ * .;;, ,;;;, ` ;; ;; ;; ;; ,;;, .;;. .;;, ;; ;; ;; ;; ` ;; ;; ' ;; ;; ;;;;;' ;;
+ * ;; ;; ;; ;; ;; . ;; ;; ;; . ;; ';;' `;;;' `;;'`;;' ';;'
+ * 
+ * .;;. .;;. ` ;; ;; ' ;; ;; .;;, .;;;. .;;.;;;, ;; ;; ;; ;; ' ;; ` ;; ' ;; ;;
+ * ;;;;;' .;;,;; ;; `;;;'; ;; . ;; ;; , ;; ;; `;;;' `;;';;' ;' ;; .' ;; ';;;'
+ * ,;. ..,,,...;;. ,;;;;;;;;;;;;;;;. .;;;;;;;;;;;;;;;;;; /~~~\
+ * ;;;;;;;;;;;;;;;;;;' .;;;; \ .,. ;; ;;;;;;;;;;;;;;;;;;, .;;'\ | ;;;;;;;,
+ * `;;;;;;;;;;;;;;;;; .;;;;' \__ / .:::. `;;;;;;;;, `;;;;;;;;;;;;;' .;;;;;' \
+ * ::::: `;;;;;, `;;;;;;' .,;;;;;;' \::: `;;;;;,.,,.;;;;;;.;;;;;;;''
+ * ,a@@@@@@@@@a, `;;;;;;;;;;;;;;;;;;;' .a@@@@@@@ XII @@@@@@@a, `;;;;;;;;;;;;;;;;
+ * .a@@.@@@@aaaa/|\aaaa@@@@.@@a, `;;;;;;;;;;;;;;;
+ * .@@@@@@@aaa@@@@@|@@@@@aaa@@@@@@@, ;;;;;;;;;;;;;;;.
+ * .@@@@@@@aa@@@@@@@/|\@@@@@@@aa@@@@@@@. ;;;;;;;;;;;;;;;;;
+ * .@@@.@@@aa@@@@@@@@@|@@@@@@@@@aa@@@.@@@.
+ * .################### @@@@@@@aa@@@@@@@@@@|@@@@@@@@@@aa@@@@@@@
+ * ###################; @@@@@@@aa@@@@@@@@@@|@@@@@@@@@@aa@@@@@@@
+ * #;;;;;;;#######;;;;; @ IX @@aa@@@@@@@@@@|@@@@@@@@@@aa@ III @
+ * ;;;;;;;;;###;;;;;;;; @aaaa@@aa@@@@@@@@@@@@@@@@@@@@@aa@aaaaa@ ;;;;;;;;'
+ * `;;;;;;;' @@@@@@@aa@@@@@@@@@@@@@@@@@@@@@aa@@@@@@@ ,;;;;;;' ;;;;;;'
+ * `@@@.@@@aa@@@@@@@@@@@@@@@@@@@aa@@@.@@@' ,;;;;;' ;;;;;'
+ * `@@@@@@@aa@@@@@@@@@@@@@@@@aa@@@@@@@@' ,;;;;' ,;;;;'
+ * `@@@@.@@@aaa@@@@@@@@@@aaa@@.@@@@@@' ;;;;' .;;;;'
+ * `@@@@@@@@aaaaaaaaaa@@@@@@@@@' .;;;;; ;;;;;;;, `@@@@@@@@@ VI @@@@@@@@' `;;;;;'
+ * ''''''' `@@@@aaaa@@@'
+ */
 // Made by Alex 2018/2019 New Years as he fights that he isnt a work-aholic
