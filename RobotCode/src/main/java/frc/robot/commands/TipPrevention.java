@@ -7,19 +7,14 @@
 
 package frc.robot.commands;
 
-import com.victoryforphil.logger.VictoryLogger;
-import com.victoryforphil.victoryconnect.listeners.TopicSource;
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.networking.Networking;
 
-public class PublishPressureCommand extends Command {
-  public PublishPressureCommand() {
+public class TipPrevention extends Command {
+  public TipPrevention() {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_pressure);
+    // eg. requires(chassis);
+    requires(Robot.m_nav);
   }
 
   // Called just before this Command runs the first time
@@ -30,32 +25,15 @@ public class PublishPressureCommand extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    VictoryLogger.debug("PublishPressureCommand", "Pressure", Robot.m_pressure.getPressure() + " PSI");
-    
-    if(RobotMap.NetworkingSettings.useVictoryConnect){
-      
-      Networking.vcClient.addSource(new TopicSource(){
-      
-        @Override
-        public String getPath() {
-          return "bot/pressure";
-        }
-      
-        @Override
-        public Object getData() {
-          return  Robot.m_pressure.getPressure();
-        }
-      
-        @Override
-        public String getConnection() {
-          return "TCP";
-        }
-      });
-
-    }else{
-      SmartDashboard.putNumber("pressure", Robot.m_pressure.getPressure());
+    System.out.println("Tip:" + Robot.m_nav.getTip());
+    double tip = Robot.m_nav.getTip();
+    if(tip < -4.5){
+      Robot.m_drivetrain.arcadeDrive(-0.8, 0);
     }
-  }
+    if(tip < 4.5){
+      Robot.m_drivetrain.arcadeDrive(0.8, 0);
+    }
+  } 
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

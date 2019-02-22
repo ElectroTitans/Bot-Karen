@@ -11,7 +11,7 @@ import com.kauailabs.navx.frc.AHRS;
 import com.victoryforphil.victoryconnect.listeners.ClientListener;
 import com.victoryforphil.victoryconnect.listeners.TopicSource;
 
-import edu.wpi.first.wpilibj.I2C.Port;
+import edu.wpi.first.wpilibj.SerialPort.Port;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.networking.Networking;
 
@@ -23,7 +23,7 @@ public class NavigationSubsystem extends Subsystem {
     // here. Call these from Commands.
     private AHRS navx;
     public NavigationSubsystem(){
-        navx = new AHRS(Port.kMXP);
+        navx = new AHRS(Port.kUSB1);
        
     }
     @Override
@@ -89,5 +89,8 @@ public class NavigationSubsystem extends Subsystem {
 
     public double getHeadingDegrees(){
         return navx.getFusedHeading();
+    }
+    public double getTip(){
+        return navx.getRoll();
     }
 }

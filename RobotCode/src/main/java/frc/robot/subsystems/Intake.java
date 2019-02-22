@@ -7,30 +7,39 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.AnalogInput;
-import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.RobotMap;
-import frc.robot.commands.PublishPressureCommand;
 
 /**
  * Add your docs here.
  */
-public class PressureMonitor extends Subsystem {
+
+public class Intake extends Subsystem {
   // Put methods for controlling this subsystem
   // here. Call these from Commands.
-  private AnalogInput pressureSensor;
-  public PressureMonitor(){
-    pressureSensor = new AnalogInput(RobotMap.Analog.pressureSensor);
+  private DoubleSolenoid deploySol, panelSol;
+
+  public Intake(){
+    deploySol = new DoubleSolenoid(0, 1);
+    panelSol = new DoubleSolenoid(2, 3);
   }
   @Override
   public void initDefaultCommand() {
     // Set the default command for a subsystem here.
-    setDefaultCommand(new PublishPressureCommand());
-    
+    // setDefaultCommand(new MySpecialCommand());
   }
-
-  public double getPressure(){
-    return 250 * ( pressureSensor.getVoltage() / RobotController.getVoltage5V()) - 25;
+  public void setPanel(boolean val){
+    if(val){
+      panelSol.set(DoubleSolenoid.Value.kForward);
+    }else{
+      panelSol.set(DoubleSolenoid.Value.kReverse);
+    }
+  }
+  public void setDeploy(boolean val){
+    if(val){
+      deploySol.set(DoubleSolenoid.Value.kForward);
+    }else{
+      deploySol.set(DoubleSolenoid.Value.kReverse);
+    }
   }
 }

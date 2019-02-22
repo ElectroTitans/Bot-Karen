@@ -19,12 +19,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.networking.NetworkSpark;
 import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.NavigationSubsystem;
 import frc.robot.subsystems.PressureMonitor;
 import frc.robot.subsystems.DrivetrainSubsystem.EncoderMode;
+import frc.robot.commands.DriveDistance;
+import frc.robot.commands.ElevatorPosition;
+import frc.robot.commands.ElevatorTest;
+import frc.robot.commands.JoystickDriveCommand;
 import frc.robot.commands.PublishDriveTrainCommand;
 import frc.robot.commands.PublishPressureCommand;
 import frc.robot.commands.TestCommand;
+import frc.robot.commands.TipPrevention;
 import frc.robot.networking.*;
 
 /**
@@ -41,6 +47,7 @@ public class Robot extends TimedRobot {
   public static ElevatorSubsystem m_elevator;
   public static NavigationSubsystem m_nav;
   public static PressureMonitor m_pressure;
+  public static Intake m_intake;
   /*
    * private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1",
    * RobotMap.PWM.driveLeft1); private NetworkSpark sparkLeft2 = new
@@ -62,10 +69,11 @@ public class Robot extends TimedRobot {
     m_elevator = new ElevatorSubsystem();
     m_nav = new NavigationSubsystem();
     m_pressure = new PressureMonitor();
+    m_intake =new Intake();
 
     System.out.println("Robot Code Init! - VFP");
 
-    CameraServer.getInstance().startAutomaticCapture();
+    //CameraServer.getInstance().startAutomaticCapture();
 
     if (RobotMap.NetworkingSettings.useVictoryConnect) {
 
@@ -74,8 +82,6 @@ public class Robot extends TimedRobot {
 
         @Override
         public void ready() {
-
-        
 
           RobotMap.syncWithNetwork();
           Networking.vcClient.newTopic("Robot Status", "bot/status", "TCP");
@@ -91,7 +97,7 @@ public class Robot extends TimedRobot {
       
     }else{
       new PublishPressureCommand().start();
-      new PublishDriveTrainCommand().start();
+      //new PublishDriveTrainCommand().start();
     }
 
   }
@@ -119,6 +125,8 @@ public class Robot extends TimedRobot {
     if(RobotMap.NetworkingSettings.useVictoryConnect){
       Networking.vcClient.setTopic("bot/status", "Auto");
     }
+   // new DriveDistance(1.0, 0.5).start();
+    new ElevatorTest().start();
     
   }
 
@@ -133,7 +141,9 @@ public class Robot extends TimedRobot {
     if(RobotMap.NetworkingSettings.useVictoryConnect){
       Networking.vcClient.setTopic("bot/status", "Tele");
     }
-    
+    new JoystickDriveCommand().start();
+    new TipPrevention().start();
+  
   }
 
   @Override

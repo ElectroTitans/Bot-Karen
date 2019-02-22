@@ -17,6 +17,10 @@ let ui = {
         button: document.getElementById('example-button'),
         readout: document.getElementById('example-readout').firstChild
     },
+    air:{
+        pressure: 0,
+        pressureElem: document.getElementById("pressure")
+    }
     autoSelect: document.getElementById('auto-select'),
     armPosition: document.getElementById('arm-position')
 };

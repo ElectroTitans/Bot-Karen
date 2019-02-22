@@ -105,6 +105,8 @@ function createWindow() {
     });
     // Move window to top (left) of screen.
     mainWindow.setPosition(0, 0);
+    //mainWindow.setMenu(null)
+   
     // Load window.
     mainWindow.loadURL(`file://${__dirname}/index.html`);
     // Once the python server is ready, load window contents.

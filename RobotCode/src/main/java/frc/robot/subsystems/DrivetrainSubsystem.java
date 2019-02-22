@@ -12,6 +12,7 @@ import java.beans.Encoder;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.victoryforphil.logger.VictoryLogger;
 
 import edu.wpi.first.wpilibj.PIDInterface;
 import edu.wpi.first.wpilibj.PIDOutput;
@@ -51,7 +52,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDOutput, PIDSour
 
     @Override
     public void initDefaultCommand() {
-        setDefaultCommand(new JoystickDriveCommand());
+        //setDefaultCommand(new JoystickDriveCommand());
 
     }
 
@@ -62,9 +63,14 @@ public class DrivetrainSubsystem extends Subsystem implements PIDOutput, PIDSour
         sparkLeft2 = new CANSparkMax(RobotMap.CAN.driveLeft2, MotorType.kBrushless);
         sparkRight1 = new CANSparkMax(RobotMap.CAN.driveRight1, MotorType.kBrushless);
         sparkRight2 = new CANSparkMax(RobotMap.CAN.driveRight2, MotorType.kBrushless);
-
+        
+        
         sparkLeft2.follow(sparkLeft1);
         sparkRight2.follow(sparkRight1);
+
+        sparkLeft1.setOpenLoopRampRate(0.5);
+        sparkRight1.setOpenLoopRampRate(0.5);
+        
 
         leftGroup = new SpeedControllerGroup(sparkLeft1, sparkLeft2);
         rightGroup = new SpeedControllerGroup(sparkRight1, sparkRight2);
@@ -76,16 +82,23 @@ public class DrivetrainSubsystem extends Subsystem implements PIDOutput, PIDSour
         sparkEncoderRight = sparkRight1.getEncoder();
 
         drive = new DifferentialDrive(leftGroup, rightGroup);
+
+        drive.setSafetyEnabled(false);
+        
     }
 
     public void setMotors(double left, double right) {
         leftGroup.set(left);
         rightGroup.set(right);
+        
     }
 
     public void arcadeDrive(double throttle, double turn) {
-        drive.arcadeDrive(throttle, turn);
-    }
+        drive.arcadeDrive(throttle, turn + RobotMap.DriveProfile.trim);
+
+        
+       // System.out.println("Throttle: " + throttle);
+    }   
 
     public void resetEncoder() {
         encoderLeft.reset();

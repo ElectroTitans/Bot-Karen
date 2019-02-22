@@ -7,60 +7,48 @@
 
 package frc.robot.commands;
 
-import com.victoryforphil.logger.VictoryLogger;
-import com.victoryforphil.victoryconnect.listeners.TopicSource;
-
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.networking.Networking;
 
-public class PublishPressureCommand extends Command {
-  public PublishPressureCommand() {
+public class DriveDistance extends Command {
+  private double distance, speed;
+  public DriveDistance(double distance, double speed) {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_pressure);
+    // eg. requires(chassis);
+    requires(Robot.m_drivetrain);
+    this.distance = distance;
+    this.speed = speed;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    Robot.m_drivetrain.resetEncoder();
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    VictoryLogger.debug("PublishPressureCommand", "Pressure", Robot.m_pressure.getPressure() + " PSI");
-    
-    if(RobotMap.NetworkingSettings.useVictoryConnect){
-      
-      Networking.vcClient.addSource(new TopicSource(){
-      
-        @Override
-        public String getPath() {
-          return "bot/pressure";
-        }
-      
-        @Override
-        public Object getData() {
-          return  Robot.m_pressure.getPressure();
-        }
-      
-        @Override
-        public String getConnection() {
-          return "TCP";
-        }
-      });
-
-    }else{
-      SmartDashboard.putNumber("pressure", Robot.m_pressure.getPressure());
+    System.out.println("Avg Distance: " + Robot.m_drivetrain.getAvgDistance());
+    double p = 0.5;
+    double error = distance - Robot.m_drivetrain.getAvgDistance();
+    double export = p * error;
+    if(export > 1.0){
+      export = 1.0;
     }
+    if (export < -1.0){
+      export = -1.0;
+    }
+   
+    Robot.m_drivetrain.setMotors(speed * export, speed  * export  * -1);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    double error = distance - Robot.m_drivetrain.getAvgDistance();
+    System.out.println(error);
+    return Math.abs(error) <= 0.25; 
   }
 
   // Called once after isFinished returns true

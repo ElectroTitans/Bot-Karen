@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.OI;
 import frc.robot.Robot;
@@ -22,7 +24,8 @@ import com.victoryforphil.victoryconnect.*;
  */
 public class JoystickDriveCommand extends NetworkedCommand
 {
-  
+  private int liftIndex = 0;
+  private JoystickButton liftUpButton, liftDownButton, deployButton, foldButton, panelCloseButton, panelOpenButton;
   public JoystickDriveCommand() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.m_drivetrain);
@@ -31,24 +34,34 @@ public class JoystickDriveCommand extends NetworkedCommand
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+   
+
+   
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    double throttle = Robot.m_oi.getLeftJoyStick().getY();
-    double turn     = Robot.m_oi.getRightJoystick().getX();
+    double throttle = -Robot.m_oi.getLeftJoyStick().getRawAxis(1);
+    double turn     = Robot.m_oi.getLeftJoyStick().getRawAxis(4) * 0.5;
+    
+    //System.out.println(throttle);
 
     Robot.m_drivetrain.arcadeDrive(throttle, turn);
+    
+    Robot.m_elevator.setRaw(Robot.m_oi.getRightJoystick().getRawAxis(1));
+    
   
-    if(Robot.m_oi.getLeftJoyStick().getTrigger()){
-      Robot.m_elevator.setRaw(0.5);
-    }else if(Robot.m_oi.getRightJoystick().getTrigger()){
-      Robot.m_elevator.setRaw(-0.1);
-    }else{
-      Robot.m_elevator.setRaw(0);
+  
+  }
+
+  private void updateLift(){
+    switch(liftIndex){
+      case 0:
+      case 1:
+      case 2:
+      case 3:
     }
-  
   }
 
   // Make this return true when this Command no longer needs to run execute()

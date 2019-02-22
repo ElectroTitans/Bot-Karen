@@ -7,65 +7,50 @@
 
 package frc.robot.commands;
 
-import com.victoryforphil.logger.VictoryLogger;
-import com.victoryforphil.victoryconnect.listeners.TopicSource;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
-import frc.robot.RobotMap;
-import frc.robot.networking.Networking;
 
-public class PublishPressureCommand extends Command {
-  public PublishPressureCommand() {
+public class ElevatorPosition extends Command {
+  private boolean inc;
+  public ElevatorPosition(boolean inc) {
     // Use requires() here to declare subsystem dependencies
-    requires(Robot.m_pressure);
+    requires(Robot.m_elevator);
+    this.inc = inc;
   }
 
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
+    if(inc){
+      Robot.m_elevator.incrementPos();
+    }else{
+      Robot.m_elevator.decrementPos();
+    }
   }
 
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    VictoryLogger.debug("PublishPressureCommand", "Pressure", Robot.m_pressure.getPressure() + " PSI");
+    System.out.println("Elevator PID Loop:");
+    System.out.println("\t - Current Position: " + Robot.m_elevator.getEncoder().getPosition());
     
-    if(RobotMap.NetworkingSettings.useVictoryConnect){
-      
-      Networking.vcClient.addSource(new TopicSource(){
-      
-        @Override
-        public String getPath() {
-          return "bot/pressure";
-        }
-      
-        @Override
-        public Object getData() {
-          return  Robot.m_pressure.getPressure();
-        }
-      
-        @Override
-        public String getConnection() {
-          return "TCP";
-        }
-      });
-
-    }else{
-      SmartDashboard.putNumber("pressure", Robot.m_pressure.getPressure());
-    }
+    SmartDashboard.putNumber("elevator/pos",  Robot.m_elevator.getEncoder().getPosition());
+   // SmartDashboard.putNumber("elevator/target", pos);
+    //SmartDashboard.putNumber("elevator/error",  Math.abs(Robot.m_elevator.getEncoder().getPosition() - pos));
+ // System.out.println("\t - Error: " + Robot.m)
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return false;
+    return Robot.m_elevator.isDone();
   }
 
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    Robot.m_elevator.idle();
   }
 
   // Called when another command which requires one or more of the same
