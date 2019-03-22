@@ -25,7 +25,7 @@ import com.victoryforphil.victoryconnect.*;
 public class JoystickDriveCommand extends NetworkedCommand
 {
   private int liftIndex = 0;
-  private JoystickButton liftUpButton, liftDownButton, deployButton, foldButton, panelCloseButton, panelOpenButton;
+  //prvate JoystickButton liftUpButton, liftDownButton, deployButton, foldButton, panelCloseButton, panelOpenButton;
   public JoystickDriveCommand() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.m_drivetrain);
@@ -34,7 +34,7 @@ public class JoystickDriveCommand extends NetworkedCommand
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
-   
+    System.out.println("[JoystickDriveCommand] Init");
 
    
   }
@@ -43,7 +43,7 @@ public class JoystickDriveCommand extends NetworkedCommand
   @Override
   protected void execute() {
     double throttle = -Robot.m_oi.getLeftJoyStick().getRawAxis(1);
-    double turn     = Robot.m_oi.getLeftJoyStick().getRawAxis(4) * 0.5;
+    double turn      = Robot.m_oi.getLeftJoyStick().getRawAxis(4);
     
     //System.out.println(throttle);
 
@@ -54,16 +54,6 @@ public class JoystickDriveCommand extends NetworkedCommand
   
   
   }
-
-  private void updateLift(){
-    switch(liftIndex){
-      case 0:
-      case 1:
-      case 2:
-      case 3:
-    }
-  }
-
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
@@ -73,11 +63,13 @@ public class JoystickDriveCommand extends NetworkedCommand
   // Called once after isFinished returns true
   @Override
   protected void end() {
+    System.out.println("[JoystickDriveCommand] ended");
   }
 
   // Called when another command which requires one or more of the same
   // subsystems is scheduled to run
   @Override
   protected void interrupted() {
+    System.out.println("[JoystickDriveCommand] interrupted");
   }
 }

@@ -75,7 +75,7 @@ public class ElevatorSubsystem extends NetworkedSubsystem {
     public void setRaw(double value){
         liftSpark1.set(value);
 
-        System.out.println("Max fault:" +  liftSpark1.getFaults());
+       // System.out.println("Max fault:" +  liftSpark1.getFaults());
         
     }  
     public void incrementPos(){
@@ -102,7 +102,7 @@ public class ElevatorSubsystem extends NetworkedSubsystem {
         
     }
     private  void runPID(){
-        pidController.setReference(currentTarget,ControlType.kPosition);
+       // pidController.setReference(currentTarget,ControlType.kPosition);
     }
 
     public boolean isDone(){

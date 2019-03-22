@@ -10,6 +10,7 @@ package frc.robot;
 import com.victoryforphil.victoryconnect.listeners.ClientListener;
 
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -64,15 +65,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    m_oi = new OI();
+   
     m_drivetrain = new DrivetrainSubsystem(EncoderMode.NEO);
     m_elevator = new ElevatorSubsystem();
     m_nav = new NavigationSubsystem();
     m_pressure = new PressureMonitor();
     m_intake =new Intake();
+    m_oi = new OI();
 
     System.out.println("Robot Code Init! - VFP");
-
+    
     //CameraServer.getInstance().startAutomaticCapture();
 
     if (RobotMap.NetworkingSettings.useVictoryConnect) {
@@ -126,7 +128,7 @@ public class Robot extends TimedRobot {
       Networking.vcClient.setTopic("bot/status", "Auto");
     }
    // new DriveDistance(1.0, 0.5).start();
-    new ElevatorTest().start();
+   // new JoystickDriveCommand().start();
     
   }
 
@@ -141,8 +143,10 @@ public class Robot extends TimedRobot {
     if(RobotMap.NetworkingSettings.useVictoryConnect){
       Networking.vcClient.setTopic("bot/status", "Tele");
     }
-    new JoystickDriveCommand().start();
-    new TipPrevention().start();
+    //new JoystickDriveCommand().start();
+    //new TipPrevention().start();
+
+    Scheduler.getInstance().run();
   
   }
 

@@ -10,11 +10,12 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
-public class TipPrevention extends Command {
-  public TipPrevention() {
+public class IntakeWheels extends Command {
+ 
+  public IntakeWheels() {
     // Use requires() here to declare subsystem dependencies
     // eg. requires(chassis);
-    requires(Robot.m_nav);
+    requires(Robot.m_intake);
   }
 
   // Called just before this Command runs the first time
@@ -25,15 +26,8 @@ public class TipPrevention extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    System.out.println("Tip:" + Robot.m_nav.getTip());
-    double tip = Robot.m_nav.getTip();
-    if(tip < -4.5){
-      //Robot.m_drivetrain.arcadeDrive(-0.8, 0);
-    }
-    if(tip < 4.5){
-     // Robot.m_drivetrain.arcadeDrive(0.8, 0);
-    }
-  } 
+    Robot.m_intake.setWheelsRaw(Robot.m_oi.getRightJoystick().getRawAxis(5) * 0.8);
+  }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override

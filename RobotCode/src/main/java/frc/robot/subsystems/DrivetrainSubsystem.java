@@ -52,7 +52,7 @@ public class DrivetrainSubsystem extends Subsystem implements PIDOutput, PIDSour
 
     @Override
     public void initDefaultCommand() {
-        //setDefaultCommand(new JoystickDriveCommand());
+        setDefaultCommand(new JoystickDriveCommand());
 
     }
 
@@ -68,8 +68,8 @@ public class DrivetrainSubsystem extends Subsystem implements PIDOutput, PIDSour
         sparkLeft2.follow(sparkLeft1);
         sparkRight2.follow(sparkRight1);
 
-        sparkLeft1.setOpenLoopRampRate(0.5);
-        sparkRight1.setOpenLoopRampRate(0.5);
+        //sparkLeft1.setOpenLoopRampRate(0.5);
+        //sparkRight1.setOpenLoopRampRate(0.5);
         
 
         leftGroup = new SpeedControllerGroup(sparkLeft1, sparkLeft2);

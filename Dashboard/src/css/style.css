@@ -77,14 +77,15 @@ header {
 #camera {
     padding: 0;
     position: fixed;
-    bottom: 0;
+    bottom: 0;n
     left: 0;
-    width: 50vw;
-    height: 80vh;
+    width:40vw;
+    height:40vw;
+    transform: rotate(270deg);
     overflow: hidden;
     background-color: #333;
     /* You'll need to mess with this a bit to get your camera to work. Replace the url with a live-updating image feed from your camera. Using other camera streaming systems will require some tweaking. */
-    background-image: url('https://i.ytimg.com/vi/nmvbX3W5-Mo/maxresdefault.jpg');
+    background-image: url('http://frcvision.local:1181/stream.mjpg');
 }
 article {
     top: 0;

@@ -33,6 +33,7 @@ public class RobotMap {
     public static final int elevator1 = 5;
 
     public static final int intakeWheel1 = 6;
+    public static final int intakeWheel2 = 7;
   }
 
 
@@ -65,7 +66,7 @@ public class RobotMap {
     public static final double D = 0;
     public static final double V = 1 / maxVelocity;
     public static final double A = 0;
-    public static final double trim  = 0.1;
+    public static final double trim  = -0.15;
   }
 
   public static class ElevatorProfile{
