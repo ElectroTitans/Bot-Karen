@@ -51,7 +51,7 @@ public class TitanPIDSettings{
     }
 
     public String toString(){
-        return name + " - (P: " + getP() + ", I" + getI() + ", D" + getD()); 
+        return name + " - (P: " + getP() + ", I" + getI() + ", D" + getD()+")"; 
     }
 
 }

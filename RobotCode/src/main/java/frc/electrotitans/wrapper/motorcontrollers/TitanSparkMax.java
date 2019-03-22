@@ -7,7 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.CAN;
 import frc.electrotitans.wrapper.motorcontrollers.MotorControllerSafety;
-import frc.electrotitans.*;
+
 import frc.electrotitans.util.TitanPIDSettings;
 public class TitanSparkMax{
 

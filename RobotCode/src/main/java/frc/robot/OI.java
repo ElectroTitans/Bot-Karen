@@ -9,6 +9,9 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import frc.robot.commands.DeployIntake;
+import frc.robot.commands.ElevatorPosition;
+import frc.robot.commands.PanelIntake;
 
 /**
  * This class is the glue that binds the controls on the physical operator

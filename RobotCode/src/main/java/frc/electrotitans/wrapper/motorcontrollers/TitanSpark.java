@@ -1,2 +1,2 @@
-package frc.electrotitans.wrapper;
+package frc.electrotitans.wrapper.motorcontrollers;
 

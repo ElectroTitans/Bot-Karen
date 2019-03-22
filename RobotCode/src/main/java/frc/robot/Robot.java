@@ -42,12 +42,13 @@ import frc.robot.networking.*;
  */
 public class Robot extends TimedRobot {
 
-  public static OI m_oi;
+ 
   public static DrivetrainSubsystem m_drivetrain;
   public static ElevatorSubsystem m_elevator;
   public static NavigationSubsystem m_nav;
   public static PressureMonitor m_pressure;
   public static Intake m_intake;
+  public static OI m_oi;
   /*
    * private NetworkSpark sparkLeft1 = new NetworkSpark("bot/drive/spark/left/1",
    * RobotMap.PWM.driveLeft1); private NetworkSpark sparkLeft2 = new
@@ -64,13 +65,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
 
-    m_oi = new OI();
+   
     m_drivetrain = new DrivetrainSubsystem(EncoderMode.NEO);
     m_elevator = new ElevatorSubsystem();
     m_nav = new NavigationSubsystem();
     m_pressure = new PressureMonitor();
     m_intake =new Intake();
-
+    m_oi = new OI();
     System.out.println("Robot Code Init! - VFP");
 
     //CameraServer.getInstance().startAutomaticCapture();
