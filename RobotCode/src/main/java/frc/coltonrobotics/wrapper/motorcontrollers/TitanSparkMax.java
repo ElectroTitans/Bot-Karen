@@ -1,4 +1,4 @@
-package frc.electrotitans.wrapper.motorcontrollers;
+package frc.coltonrobotics.wrapper.motorcontrollers;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.CANPIDController;
@@ -6,9 +6,9 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.CAN;
-import frc.electrotitans.wrapper.motorcontrollers.MotorControllerSafety;
+import frc.coltonrobotics.wrapper.motorcontrollers.MotorControllerSafety;
 
-import frc.electrotitans.util.TitanPIDSettings;
+import frc.coltonrobotics.util.TitanPIDSettings;
 public class TitanSparkMax{
 
     private int canPort = 0;

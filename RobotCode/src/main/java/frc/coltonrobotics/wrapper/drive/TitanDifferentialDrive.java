@@ -1,8 +1,8 @@
-package frc.electrotitans.wrapper.drive;
+package frc.coltonrobotics.wrapper.drive;
 
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import frc.electrotitans.util.TitanMath;
-import frc.electrotitans.wrapper.motorcontrollers.TitanSparkMax;
+import frc.coltonrobotics.util.TitanMath;
+import frc.coltonrobotics.wrapper.motorcontrollers.TitanSparkMax;
 
 public class TitanDifferentialDrive{
     private TitanMath.PositionState position;

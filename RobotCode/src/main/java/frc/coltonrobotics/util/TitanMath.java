@@ -1,4 +1,4 @@
-package frc.electrotitans.util;
+package frc.coltonrobotics.util;
 public class TitanMath{
     public class PositionState{
         private double xPos;

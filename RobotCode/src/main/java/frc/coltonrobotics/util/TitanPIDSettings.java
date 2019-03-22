@@ -1,4 +1,4 @@
-package frc.electrotitans.util;
+package frc.coltonrobotics.util;
 
 public class TitanPIDSettings{
     private double kP;
